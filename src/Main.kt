@@ -16,6 +16,7 @@ fun selectAction(scan: Scanner) {
     when (scan.nextLine().toInt()) {
         1 -> addMatrices(scan)
         2 -> multiplicationMatrixToConstant(scan)
+        3 -> multiplicationMatrices(scan)
         0 -> exitProcess(1)
     }
 }
@@ -26,6 +27,19 @@ fun printInfo() {
             "3. Multiply matrices\n" +
             "0. Exit\n" +
             "Your choice: ")
+}
+
+fun multiplicationMatrices(scan: Scanner) {
+    val (rows1, cols1) = readMatrixSize(scan, "first")
+    val mat1 = readMatrix(scan, rows1, cols1, "first")
+    val (rows2, cols2) = readMatrixSize(scan, "second")
+    val mat2 = readMatrix(scan, rows2, cols2, "second")
+    if (mat1.cols != mat2.rows) {
+        println("ERROR")
+    } else {
+        println("The result is: ")
+        println(mat1 * mat2)
+    }
 }
 
 fun multiplicationMatrixToConstant(scan: Scanner) {
@@ -44,7 +58,7 @@ fun addMatrices(scan: Scanner) {
     val mat1 = readMatrix(scan, rows1, cols1, "first")
     val (rows2, cols2) = readMatrixSize(scan, "second")
     val mat2 = readMatrix(scan, rows2, cols2, "second")
-    if (mat1.rows != mat2.rows || mat1.columns != mat2.columns) {
+    if (mat1.rows != mat2.rows || mat1.cols != mat2.cols) {
         println("ERROR")
     } else {
         println("The result is: ")
@@ -77,8 +91,8 @@ fun readMatrix(scan: Scanner, rows: Int, cols: Int, n: String = ""): Matrix {
 }
 
 
-class Matrix(val rows: Int, val columns: Int) {
-    private val content = Array(rows) { IntArray(columns) }
+class Matrix(val rows: Int, val cols: Int) {
+    private val content = Array(rows) { IntArray(cols) }
 
     fun fillLine(lineNumber: Int, data: IntArray) {
         data.copyInto(content[lineNumber])
@@ -93,9 +107,9 @@ class Matrix(val rows: Int, val columns: Int) {
     }
 
     operator fun plus(mat2: Matrix): Matrix {
-        val result = Matrix(rows, columns)
+        val result = Matrix(rows, cols)
         for (i in 0 until rows) {
-            for (j in 0 until columns) {
+            for (j in 0 until cols) {
                 result[i][j] = this[i][j] + mat2[i][j]
             }
         }
@@ -103,15 +117,34 @@ class Matrix(val rows: Int, val columns: Int) {
     }
 
     operator fun times(n: Int): Matrix {
-        val result = Matrix(rows, columns)
+        val result = Matrix(rows, cols)
         for (i in 0 until rows) {
-            for (j in 0 until columns) {
+            for (j in 0 until cols) {
                 result[i][j] = this[i][j] * n
             }
         }
         return result
     }
 
+    operator fun times(mat2: Matrix): Matrix {
+        val result = Matrix(rows, rows)
+        for (i in 0 until rows) {
+            for (j in 0 until rows) {
+                val rowMatrix1 = this[i]
+                val colMatrix2 = IntArray(cols)
+                for (r in 0 until mat2.rows) {
+                    colMatrix2[r] = mat2[r][j]
+                }
+                var sum = 0
+                for (l in rowMatrix1.indices) {
+                    sum += rowMatrix1[l] * colMatrix2[l]
+                }
+                result[i][j] = sum
+            }
+        }
+
+        return result
+    }
 
     operator fun get(i: Int): IntArray {
         return content[i]
