@@ -84,7 +84,7 @@ fun readMatrix(scan: Scanner, rows: Int, cols: Int, n: String = ""): Matrix {
     }
     val result = Matrix(rows, cols)
     for (i in 0 until result.rows) {
-        val row = scan.nextLine().trim().split(" ").map(String::toInt).toIntArray()
+        val row = scan.nextLine().trim().split(" ").map(String::toDouble).toDoubleArray()
         result.fillLine(i, row)
     }
     return result
@@ -92,9 +92,9 @@ fun readMatrix(scan: Scanner, rows: Int, cols: Int, n: String = ""): Matrix {
 
 
 class Matrix(val rows: Int, val cols: Int) {
-    private val content = Array(rows) { IntArray(cols) }
+    private val content = Array(rows) { DoubleArray(cols) }
 
-    fun fillLine(lineNumber: Int, data: IntArray) {
+    fun fillLine(lineNumber: Int, data: DoubleArray) {
         data.copyInto(content[lineNumber])
     }
 
@@ -127,15 +127,15 @@ class Matrix(val rows: Int, val cols: Int) {
     }
 
     operator fun times(mat2: Matrix): Matrix {
-        val result = Matrix(rows, rows)
+        val result = Matrix(rows, mat2.cols)
         for (i in 0 until rows) {
-            for (j in 0 until rows) {
+            for (j in 0 until mat2.cols) {
                 val rowMatrix1 = this[i]
-                val colMatrix2 = IntArray(cols)
+                val colMatrix2 = DoubleArray(cols)
                 for (r in 0 until mat2.rows) {
                     colMatrix2[r] = mat2[r][j]
                 }
-                var sum = 0
+                var sum = 0.0
                 for (l in rowMatrix1.indices) {
                     sum += rowMatrix1[l] * colMatrix2[l]
                 }
@@ -146,7 +146,7 @@ class Matrix(val rows: Int, val cols: Int) {
         return result
     }
 
-    operator fun get(i: Int): IntArray {
+    operator fun get(i: Int): DoubleArray {
         return content[i]
     }
 }
