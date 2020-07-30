@@ -4,6 +4,16 @@ import java.util.*
 
 fun main() {
     val scan = Scanner(System.`in`)
+    multiplicationMatrixByNumber(scan)
+}
+
+fun multiplicationMatrixByNumber(scan: Scanner) {
+    val mat = readMatrix(scan)
+    val whatTimes = scan.nextInt()
+    println(mat * whatTimes)
+}
+
+fun sumMatrices(scan: Scanner) {
     val mat1 = readMatrix(scan)
     val mat2 = readMatrix(scan)
     if (mat1.rows != mat2.rows || mat1.columns != mat2.columns) {
@@ -48,6 +58,17 @@ class Matrix(val rows: Int, val columns: Int) {
         }
         return result
     }
+
+    operator fun times(n: Int): Matrix {
+        val result = Matrix(rows, columns)
+        for (i in 0 until rows) {
+            for (j in 0 until columns) {
+                result[i][j] = this[i][j] * n
+            }
+        }
+        return result
+    }
+
 
     operator fun get(i: Int): IntArray {
         return content[i]
