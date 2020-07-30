@@ -5,8 +5,11 @@ import kotlin.system.exitProcess
 
 fun main() {
     val scan = Scanner(System.`in`)
-    printInfo()
-    selectAction(scan)
+
+    while (true) {
+        printInfo()
+        selectAction(scan)
+    }
 }
 
 fun selectAction(scan: Scanner) {
@@ -26,18 +29,21 @@ fun printInfo() {
 }
 
 fun multiplicationMatrixToConstant(scan: Scanner) {
-    val (rows, cols) = readMatrixSize(scan, "")
-    val mat = readMatrix(scan, "", rows, cols)
-    val whatTimes = scan.nextInt()
-    println("The multiplication result is:")
+    val (rows, cols) = readMatrixSize(scan)
+    val mat = readMatrix(scan, rows, cols)
+
+    print("Enter the constant: ")
+    val whatTimes = scan.nextLine().toInt()
+
+    println("The result is:")
     println(mat * whatTimes)
 }
 
 fun addMatrices(scan: Scanner) {
-    val (rows1, cols1) = readMatrixSize(scan, "first ")
-    val mat1 = readMatrix(scan, "first ", rows1, cols1)
-    val (rows2, cols2) = readMatrixSize(scan, "second ")
-    val mat2 = readMatrix(scan, "second ", rows2, cols2)
+    val (rows1, cols1) = readMatrixSize(scan, "first")
+    val mat1 = readMatrix(scan, rows1, cols1, "first")
+    val (rows2, cols2) = readMatrixSize(scan, "second")
+    val mat2 = readMatrix(scan, rows2, cols2, "second")
     if (mat1.rows != mat2.rows || mat1.columns != mat2.columns) {
         println("ERROR")
     } else {
@@ -46,14 +52,22 @@ fun addMatrices(scan: Scanner) {
     }
 }
 
-fun readMatrixSize(scan: Scanner, n: String): Pair<Int, Int> {
-    print("Enter the size of ${n}matrix: ")
+fun readMatrixSize(scan: Scanner, n: String = ""): Pair<Int, Int> {
+    if (n.isNotEmpty()) {
+        print("Enter the size of $n matrix: ")
+    } else {
+        print("Enter the size of the matrix: ")
+    }
     val dim = scan.nextLine().trim().split(" ").map(String::toInt)
     return Pair(dim[0], dim[1])
 }
 
-fun readMatrix(scan: Scanner, n: String, rows: Int, cols: Int): Matrix {
-    println("Enter {$n}matrix")
+fun readMatrix(scan: Scanner, rows: Int, cols: Int, n: String = ""): Matrix {
+    if (n.isNotEmpty()) {
+        println("Enter $n matrix: ")
+    } else {
+        println("Enter the matrix: ")
+    }
     val result = Matrix(rows, cols)
     for (i in 0 until result.rows) {
         val row = scan.nextLine().trim().split(" ").map(String::toInt).toIntArray()
