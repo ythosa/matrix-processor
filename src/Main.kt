@@ -1,39 +1,55 @@
 package processor
 
-import java.util.Scanner
-
-fun initMatrix(scanner: Scanner, rows: Int, cols: Int): Array<Array<Int>> {
-    var matrix = arrayOf<Array<Int>>()
-    for (i in 0 until rows) {
-        var arr = arrayOf<Int>()
-        for (j in 0 until cols) {
-            arr += scanner.nextInt()
-        }
-        matrix += arr
-    }
-    return matrix
-}
+import java.util.*
 
 fun main() {
-    val scanner = Scanner(System.`in`)
-
-    val rowsMatrix1 = scanner.nextInt()
-    val colsMatrix1 = scanner.nextInt()
-    val matrix1 = initMatrix(scanner, rowsMatrix1, colsMatrix1)
-
-    val rowsMatrix2 = scanner.nextInt()
-    val colsMatrix2 = scanner.nextInt()
-    val matrix2 = initMatrix(scanner, rowsMatrix2, colsMatrix2)
-
-    if (rowsMatrix1 != rowsMatrix2 || colsMatrix1 != colsMatrix2) {
+    val scan = Scanner(System.`in`)
+    val mat1 = readMatrix(scan)
+    val mat2 = readMatrix(scan)
+    if (mat1.rows != mat2.rows || mat1.columns != mat2.columns) {
         println("ERROR")
-        return
+    } else {
+        println(mat1 + mat2)
+    }
+}
+
+fun readMatrix(scan: Scanner): Matrix {
+    val dim = scan.nextLine().trim().split(" ").map(String::toInt)
+    val result = Matrix(dim[0], dim[1])
+    for (i in 0 until result.rows) {
+        val row = scan.nextLine().trim().split(" ").map(String::toInt).toIntArray()
+        result.fillLine(i, row)
+    }
+    return result
+}
+
+
+class Matrix(val rows: Int, val columns: Int) {
+    private val content = Array(rows) { IntArray(columns) }
+
+    fun fillLine(lineNumber: Int, data: IntArray) {
+        data.copyInto(content[lineNumber])
     }
 
-    for (i in 0 until rowsMatrix1) {
-        for (j in 0 until colsMatrix1) {
-            print("${matrix1[i][j] + matrix2[i][j]} ")
+    override fun toString(): String {
+        val result = StringBuilder()
+        for (row in content) {
+            result.appendln(row.joinToString(" "))
         }
-        println()
+        return result.toString()
+    }
+
+    operator fun plus(mat2: Matrix): Matrix {
+        val result = Matrix(rows, columns)
+        for (i in 0 until rows) {
+            for (j in 0 until columns) {
+                result[i][j] = this[i][j] + mat2[i][j]
+            }
+        }
+        return result
+    }
+
+    operator fun get(i: Int): IntArray {
+        return content[i]
     }
 }
