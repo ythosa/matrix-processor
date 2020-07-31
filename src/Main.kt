@@ -44,6 +44,7 @@ fun transposeMatrix(scan: Scanner) {
 
     when (transposeType) {
         1 -> println(mat.transposeByMainDiagonal())
+        2 -> println(mat.transposeBySideDiagonal())
         3 -> println(mat.transposeByVerticalLine())
         4 -> println(mat.transposeByHorizontalLine())
     }
@@ -126,6 +127,10 @@ class Matrix(val rows: Int, val cols: Int) {
             }
         }
         return result
+    }
+
+    fun transposeBySideDiagonal(): Matrix {
+        return this.transposeByMainDiagonal().transposeByVerticalLine().transposeByHorizontalLine()
     }
 
     fun transposeByVerticalLine(): Matrix {
