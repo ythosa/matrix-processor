@@ -37,8 +37,13 @@ fun transposeMatrix(scan: Scanner) {
             "3. Vertical line\n" +
             "4. Horizontal line\n" +
             "Your choice: ")
-    when (scan.nextLine().toInt()) {
+    val transposeType = scan.nextLine().toInt()
 
+    val (rows, cols) = readMatrixSize(scan)
+    val mat = readMatrix(scan, rows, cols)
+
+    when (transposeType) {
+        3 -> println(mat.transposeByVerticalLine())
     }
 }
 
@@ -109,6 +114,16 @@ class Matrix(val rows: Int, val cols: Int) {
 
     fun fillLine(lineNumber: Int, data: DoubleArray) {
         data.copyInto(content[lineNumber])
+    }
+
+    fun transposeByVerticalLine(): Matrix {
+        val result = Matrix(rows, cols)
+        for (i in 0 until this.rows) {
+            for (j in this.cols - 1 downTo 0) {
+                result[i][cols - 1 - j] = this[i][j]
+            }
+        }
+        return result
     }
 
     override fun toString(): String {
