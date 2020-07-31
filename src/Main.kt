@@ -44,6 +44,7 @@ fun transposeMatrix(scan: Scanner) {
 
     when (transposeType) {
         3 -> println(mat.transposeByVerticalLine())
+        4 -> println(mat.transposeByHorizontalLine())
     }
 }
 
@@ -121,6 +122,16 @@ class Matrix(val rows: Int, val cols: Int) {
         for (i in 0 until this.rows) {
             for (j in this.cols - 1 downTo 0) {
                 result[i][cols - 1 - j] = this[i][j]
+            }
+        }
+        return result
+    }
+
+    fun transposeByHorizontalLine(): Matrix {
+        val result = Matrix(rows, cols)
+        for (i in this.rows - 1 downTo 0) {
+            for (j in 0 until this.cols) {
+                result[rows - 1 - i][j] = this[i][j]
             }
         }
         return result
