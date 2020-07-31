@@ -17,6 +17,7 @@ fun selectAction(scan: Scanner) {
         1 -> addMatrices(scan)
         2 -> multiplicationMatrixToConstant(scan)
         3 -> multiplicationMatrices(scan)
+        4 -> transposeMatrix(scan)
         0 -> exitProcess(1)
     }
 }
@@ -25,8 +26,20 @@ fun printInfo() {
     print("1. Add matrices\n" +
             "2. Multiply matrix to a constant\n" +
             "3. Multiply matrices\n" +
+            "4. Transpose matrix\n" +
             "0. Exit\n" +
             "Your choice: ")
+}
+
+fun transposeMatrix(scan: Scanner) {
+    print("1. Main diagonal\n" +
+            "2. Side diagonal\n" +
+            "3. Vertical line\n" +
+            "4. Horizontal line\n" +
+            "Your choice: ")
+    when (scan.nextLine().toInt()) {
+
+    }
 }
 
 fun multiplicationMatrices(scan: Scanner) {
