@@ -43,6 +43,7 @@ fun transposeMatrix(scan: Scanner) {
     val mat = readMatrix(scan, rows, cols)
 
     when (transposeType) {
+        1 -> println(mat.transposeByMainDiagonal())
         3 -> println(mat.transposeByVerticalLine())
         4 -> println(mat.transposeByHorizontalLine())
     }
@@ -117,10 +118,20 @@ class Matrix(val rows: Int, val cols: Int) {
         data.copyInto(content[lineNumber])
     }
 
+    fun transposeByMainDiagonal(): Matrix {
+        val result = Matrix(rows=cols, cols=rows)
+        for (i in 0 until this.rows) {
+            for (j in 0 until this.cols) {
+                result[j][i] = this[i][j]
+            }
+        }
+        return result
+    }
+
     fun transposeByVerticalLine(): Matrix {
         val result = Matrix(rows, cols)
-        for (i in 0 until this.rows) {
-            for (j in this.cols - 1 downTo 0) {
+        for (i in 0 until rows) {
+            for (j in cols - 1 downTo 0) {
                 result[i][cols - 1 - j] = this[i][j]
             }
         }
@@ -129,8 +140,8 @@ class Matrix(val rows: Int, val cols: Int) {
 
     fun transposeByHorizontalLine(): Matrix {
         val result = Matrix(rows, cols)
-        for (i in this.rows - 1 downTo 0) {
-            for (j in 0 until this.cols) {
+        for (i in rows - 1 downTo 0) {
+            for (j in 0 until cols) {
                 result[rows - 1 - i][j] = this[i][j]
             }
         }
