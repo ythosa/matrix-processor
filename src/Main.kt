@@ -1,7 +1,6 @@
 package processor
 
 import java.util.*
-import kotlin.concurrent.fixedRateTimer
 import kotlin.system.exitProcess
 
 fun main() {
@@ -126,17 +125,40 @@ class Matrix(val rows: Int, val cols: Int) {
 
     val determinant: Double
         get() {
-            var det: Double = 0.0
-
-            return det
+            return getDeterminant(this)
         }
+
+    private fun getDeterminant(m: Matrix): Double {
+        if (m.rows == 2) {
+            return m[0][0] * m[1][1] - m[1][0] * m[0][1]
+        }
+
+        var det: Double = 0.0
+        val n = m.rows
+        val subMatrix = Matrix(n - 1, n - 1)
+        for (x in 0 until n) {
+            var subi = 0
+            for (i in 1 until n) {
+                var subj = 0
+                for (j in 0 until n) {
+                    if (j == x) continue
+                    subMatrix[subi][subj] = m[i][j]
+                    subj++
+                }
+                subi++
+            }
+            det += Math.pow(-1.0, x.toDouble()) * m[0][x] * getDeterminant(subMatrix)
+        }
+
+        return det
+    }
 
     fun fillLine(lineNumber: Int, data: DoubleArray) {
         data.copyInto(content[lineNumber])
     }
 
     fun transposeByMainDiagonal(): Matrix {
-        val result = Matrix(rows=cols, cols=rows)
+        val result = Matrix(rows = cols, cols = rows)
         for (i in 0 until this.rows) {
             for (j in 0 until this.cols) {
                 result[j][i] = this[i][j]
