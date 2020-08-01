@@ -1,6 +1,7 @@
 package processor
 
 import java.util.*
+import kotlin.math.pow
 import kotlin.system.exitProcess
 
 fun main() {
@@ -35,6 +36,12 @@ fun printInfo() {
 
 fun calculationDeterminant(scan: Scanner) {
     val (rows, cols) = readMatrixSize(scan)
+
+    if (rows != cols) {
+        println("ERROR")
+        return
+    }
+
     val mat = readMatrix(scan, rows, cols)
     println(mat.determinant)
 }
@@ -63,12 +70,14 @@ fun multiplicationMatrices(scan: Scanner) {
     val mat1 = readMatrix(scan, rows1, cols1, "first")
     val (rows2, cols2) = readMatrixSize(scan, "second")
     val mat2 = readMatrix(scan, rows2, cols2, "second")
+
     if (mat1.cols != mat2.rows) {
         println("ERROR")
-    } else {
-        println("The result is: ")
-        println(mat1 * mat2)
+        return
     }
+
+    println("The result is: ")
+    println(mat1 * mat2)
 }
 
 fun multiplicationMatrixToConstant(scan: Scanner) {
@@ -87,12 +96,14 @@ fun addMatrices(scan: Scanner) {
     val mat1 = readMatrix(scan, rows1, cols1, "first")
     val (rows2, cols2) = readMatrixSize(scan, "second")
     val mat2 = readMatrix(scan, rows2, cols2, "second")
+
     if (mat1.rows != mat2.rows || mat1.cols != mat2.cols) {
         println("ERROR")
-    } else {
-        println("The result is: ")
-        println(mat1 + mat2)
+        return
     }
+
+    println("The result is: ")
+    println(mat1 + mat2)
 }
 
 fun readMatrixSize(scan: Scanner, n: String = ""): Pair<Int, Int> {
@@ -133,21 +144,19 @@ class Matrix(val rows: Int, val cols: Int) {
             return m[0][0] * m[1][1] - m[1][0] * m[0][1]
         }
 
-        var det: Double = 0.0
+        var det = 0.0
         val n = m.rows
         val subMatrix = Matrix(n - 1, n - 1)
         for (x in 0 until n) {
-            var subi = 0
-            for (i in 1 until n) {
+            for ((subi, i) in (1 until n).withIndex()) {
                 var subj = 0
                 for (j in 0 until n) {
                     if (j == x) continue
                     subMatrix[subi][subj] = m[i][j]
                     subj++
                 }
-                subi++
             }
-            det += Math.pow(-1.0, x.toDouble()) * m[0][x] * getDeterminant(subMatrix)
+            det += (-1.0).pow(x.toDouble()) * m[0][x] * getDeterminant(subMatrix)
         }
 
         return det
