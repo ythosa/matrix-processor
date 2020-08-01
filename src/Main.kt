@@ -1,6 +1,7 @@
 package processor
 
 import java.util.*
+import kotlin.concurrent.fixedRateTimer
 import kotlin.system.exitProcess
 
 fun main() {
@@ -18,6 +19,7 @@ fun selectAction(scan: Scanner) {
         2 -> multiplicationMatrixToConstant(scan)
         3 -> multiplicationMatrices(scan)
         4 -> transposeMatrix(scan)
+        5 -> calculationDeterminant(scan)
         0 -> exitProcess(1)
     }
 }
@@ -27,8 +29,15 @@ fun printInfo() {
             "2. Multiply matrix to a constant\n" +
             "3. Multiply matrices\n" +
             "4. Transpose matrix\n" +
+            "5. Calculate a determinant\n" +
             "0. Exit\n" +
             "Your choice: ")
+}
+
+fun calculationDeterminant(scan: Scanner) {
+    val (rows, cols) = readMatrixSize(scan)
+    val mat = readMatrix(scan, rows, cols)
+    println(mat.determinant)
 }
 
 fun transposeMatrix(scan: Scanner) {
@@ -114,6 +123,13 @@ fun readMatrix(scan: Scanner, rows: Int, cols: Int, n: String = ""): Matrix {
 
 class Matrix(val rows: Int, val cols: Int) {
     private val content = Array(rows) { DoubleArray(cols) }
+
+    val determinant: Double
+        get() {
+            var det: Double = 0.0
+
+            return det
+        }
 
     fun fillLine(lineNumber: Int, data: DoubleArray) {
         data.copyInto(content[lineNumber])
