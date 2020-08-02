@@ -22,9 +22,7 @@
 ## What it looks like
 
 <div align="center">
-    <video autoplay>
-      <source src="assets/demonstration.mp4" type="video/mp4">
-    </video>
+    <img src="assets/demonstration.gif" alt="Demonstration"/>
 </div>
 
 ## FAQ
