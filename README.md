@@ -1,6 +1,6 @@
 <br>
 
-<h1 align="center">matrix-processor</h1>
+<h1 align="center">Matrix Processor</h1>
 <div align="center">
 
 [![Badge](https://img.shields.io/badge/Uses-Kotlin-orange.svg?style=flat&logo=kotlin&logoWidth=15&logoColor=orange)](https://kotlinlang.org/)
@@ -19,6 +19,14 @@
     5. Calculate a determinant of matrix;
     6. Inverse matrix.
 
+## What it looks like
+
+<div align="center">
+    <video autoplay>
+      <source src="assets/demonstration.mp4" type="video/mp4">
+    </video>
+</div>
+
 ## FAQ
 _Q_: How can I help to develop this project?  
 _A_: You can put a :star: :3
@@ -26,5 +34,5 @@ _A_: You can put a :star: :3
 <br>
 
 <div align="center">
-  Copyright 2020 Ythosa / Ethosa
+  Copyright 2020 Ythosa
 </div>
