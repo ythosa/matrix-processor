@@ -6,24 +6,11 @@ import kotlin.system.exitProcess
 
 fun main() {
     val scan = Scanner(System.`in`)
-//    test(scan)
     while (true) {
         printInfo()
         selectAction(scan)
     }
 }
-
-fun test(scan: Scanner) {
-    val (rows, cols) = readMatrixSize(scan)
-    val mat = readMatrix(scan, rows, cols)
-    println(mat.getSubMatrix(mat, 1, 1))
-//    if (mat.determinant == 0.0) {
-//        println("ERROR")
-//        return
-//    }
-//    println(mat.inverse())
-}
-
 
 fun selectAction(scan: Scanner) {
     when (scan.nextLine().toInt()) {
@@ -33,8 +20,13 @@ fun selectAction(scan: Scanner) {
         4 -> transposeMatrix(scan)
         5 -> calculationDeterminant(scan)
         6 -> inverseMatrix(scan)
-        0 -> exitProcess(1)
+        0 -> exit()
     }
+}
+
+fun exit() {
+    println("Bye-bye :3")
+    exitProcess(1)
 }
 
 fun printInfo() {
@@ -55,6 +47,8 @@ fun inverseMatrix(scan: Scanner) {
         println("ERROR")
         return
     }
+
+    println("The result is: ")
     println(mat.inverse())
 }
 
@@ -66,6 +60,7 @@ fun calculationDeterminant(scan: Scanner) {
     }
 
     val mat = readMatrix(scan, rows, cols)
+    println("The result is: ")
     println(mat.determinant)
 }
 
@@ -80,6 +75,7 @@ fun transposeMatrix(scan: Scanner) {
     val (rows, cols) = readMatrixSize(scan)
     val mat = readMatrix(scan, rows, cols)
 
+    println("The result is: ")
     when (transposeType) {
         1 -> println(mat.transposeByMainDiagonal())
         2 -> println(mat.transposeBySideDiagonal())
@@ -192,18 +188,18 @@ class Matrix(val rows: Int, val cols: Int) {
         data.copyInto(content[lineNumber])
     }
 
-    fun getSubMatrix(m: Matrix, x: Int, y: Int): Matrix {
-        val size = m.rows
-        val subsize = m.rows - 1
+    private fun getSubMatrix(x: Int, y: Int): Matrix {
+        val size = this.rows
+        val subsize = this.rows - 1
         val sub = Matrix(subsize, subsize)
 
-        var subi: Int = 0
-        var subj: Int = 0
+        var subi = 0
+        var subj = 0
         for (i in 0 until size) {
             if (i == x) continue
             for (j in 0 until size) {
                 if (j == y) continue
-                sub[subi][subj] = if (((i + 1) + (j + 1)) % 2 == 0) m[i][j] else -m[i][j]
+                sub[subi][subj] = if (((i + 1) + (j + 1)) % 2 == 0) this[i][j] else -this[i][j]
                 subj++
             }
             subj = 0
@@ -217,12 +213,12 @@ class Matrix(val rows: Int, val cols: Int) {
         return sub
     }
 
-    fun cofactorMatrix(): Matrix {
+    private fun cofactorMatrix(): Matrix {
         val size = this.rows
         val cofactorMatrix = Matrix(size, size)
         for (i in 0 until size) {
             for (j in 0 until size) {
-                cofactorMatrix[i][j] = getDeterminant(getSubMatrix(this, i, j))
+                cofactorMatrix[i][j] = getDeterminant(getSubMatrix(i, j))
             }
         }
         return cofactorMatrix
