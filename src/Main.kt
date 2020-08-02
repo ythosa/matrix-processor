@@ -6,12 +6,24 @@ import kotlin.system.exitProcess
 
 fun main() {
     val scan = Scanner(System.`in`)
-
+//    test(scan)
     while (true) {
         printInfo()
         selectAction(scan)
     }
 }
+
+fun test(scan: Scanner) {
+    val (rows, cols) = readMatrixSize(scan)
+    val mat = readMatrix(scan, rows, cols)
+    println(mat.getSubMatrix(mat, 1, 1))
+//    if (mat.determinant == 0.0) {
+//        println("ERROR")
+//        return
+//    }
+//    println(mat.inverse())
+}
+
 
 fun selectAction(scan: Scanner) {
     when (scan.nextLine().toInt()) {
@@ -20,6 +32,7 @@ fun selectAction(scan: Scanner) {
         3 -> multiplicationMatrices(scan)
         4 -> transposeMatrix(scan)
         5 -> calculationDeterminant(scan)
+        6 -> inverseMatrix(scan)
         0 -> exitProcess(1)
     }
 }
@@ -30,13 +43,23 @@ fun printInfo() {
             "3. Multiply matrices\n" +
             "4. Transpose matrix\n" +
             "5. Calculate a determinant\n" +
+            "6. Inverse matrix\n" +
             "0. Exit\n" +
             "Your choice: ")
 }
 
+fun inverseMatrix(scan: Scanner) {
+    val (rows, cols) = readMatrixSize(scan)
+    val mat = readMatrix(scan, rows, cols)
+    if (mat.determinant == 0.0) {
+        println("ERROR")
+        return
+    }
+    println(mat.inverse())
+}
+
 fun calculationDeterminant(scan: Scanner) {
     val (rows, cols) = readMatrixSize(scan)
-
     if (rows != cols) {
         println("ERROR")
         return
@@ -85,7 +108,7 @@ fun multiplicationMatrixToConstant(scan: Scanner) {
     val mat = readMatrix(scan, rows, cols)
 
     print("Enter the constant: ")
-    val whatTimes = scan.nextLine().toInt()
+    val whatTimes = scan.nextLine().toDouble()
 
     println("The result is:")
     println(mat * whatTimes)
@@ -140,6 +163,9 @@ class Matrix(val rows: Int, val cols: Int) {
         }
 
     private fun getDeterminant(m: Matrix): Double {
+        if (m.rows == 1) {
+            return m[0][0]
+        }
         if (m.rows == 2) {
             return m[0][0] * m[1][1] - m[1][0] * m[0][1]
         }
@@ -164,6 +190,48 @@ class Matrix(val rows: Int, val cols: Int) {
 
     fun fillLine(lineNumber: Int, data: DoubleArray) {
         data.copyInto(content[lineNumber])
+    }
+
+    fun getSubMatrix(m: Matrix, x: Int, y: Int): Matrix {
+        val size = m.rows
+        val subsize = m.rows - 1
+        val sub = Matrix(subsize, subsize)
+
+        var subi: Int = 0
+        var subj: Int = 0
+        for (i in 0 until size) {
+            if (i == x) continue
+            for (j in 0 until size) {
+                if (j == y) continue
+                sub[subi][subj] = if (((i + 1) + (j + 1)) % 2 == 0) m[i][j] else -m[i][j]
+                subj++
+            }
+            subj = 0
+            if (subi + 1 == subsize) {
+                subi = 0
+            } else {
+                subi++
+            }
+        }
+
+        return sub
+    }
+
+    fun cofactorMatrix(): Matrix {
+        val size = this.rows
+        val cofactorMatrix = Matrix(size, size)
+        for (i in 0 until size) {
+            for (j in 0 until size) {
+                cofactorMatrix[i][j] = getDeterminant(getSubMatrix(this, i, j))
+            }
+        }
+        return cofactorMatrix
+    }
+
+    fun inverse(): Matrix {
+        println(cofactorMatrix())
+        println(determinant)
+        return cofactorMatrix().transposeByMainDiagonal() * (1 / determinant)
     }
 
     fun transposeByMainDiagonal(): Matrix {
@@ -218,7 +286,7 @@ class Matrix(val rows: Int, val cols: Int) {
         return result
     }
 
-    operator fun times(n: Int): Matrix {
+    operator fun times(n: Double): Matrix {
         val result = Matrix(rows, cols)
         for (i in 0 until rows) {
             for (j in 0 until cols) {
