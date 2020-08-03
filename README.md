@@ -4,8 +4,8 @@
 <div align="center">
 
 [![Badge](https://img.shields.io/badge/Uses-Kotlin-orange.svg?style=flat&logo=kotlin&logoWidth=15&logoColor=orange)](https://kotlinlang.org/)
-[![Badge](https://img.shields.io/badge/Open-Source-green.svg?style=flat&logo=open-source-initiative&logoWidth=15&logoColor=green)](https://ru.wikipedia.org/wiki/Open_source)
 [![Badge](https://img.shields.io/badge/Made_with-Affection-ff69b4.svg?style=flat&logo=ko-fi&logoWidth=15&logoColor=ff69b4)](https://i.pinimg.com/736x/d7/5f/e3/d75fe32e7af10c3ed0bafb98816a6ce2.jpg)
+[![Badge](https://img.shields.io/badge/Open-Source-green.svg?style=flat&logo=open-source-initiative&logoWidth=15&logoColor=green)](https://ru.wikipedia.org/wiki/Open_source)
 
 </div>
 
